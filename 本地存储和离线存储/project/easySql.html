@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+	<meta charset="UTF-8" />
+	<title>简易数据库案例</title>
+</head>
+<body>
+	<h1>使用web storage来制作简易数据库的案例</h1>
+	<table>
+		<tr>
+			<td>姓名：</td>
+			<td><input type="text" id="name" /></td>
+		</tr>
+		<tr>
+			<td>EMAIL：</td>
+			<td><input type="text" id="email" /></td>
+		</tr>
+		<tr>
+			<td>电话号码：</td>
+			<td><input type="text" id="phone" /></td>
+		</tr>
+		<tr>
+			<td>描述：</td>
+			<td><input type="text" id="memo" /></td>
+		</tr>
+		<tr>
+			<td></td>
+			<td><input type="button" id="saveBtn" value="保存数据"/></td>
+		</tr>
+	</table>
+	<hr />
+	<p>
+		检索：<input type="text" id="find" /><input type="button" value="搜索" id="findBtn" />
+	</p>
+	<p id="msg"></p>
+	<script type="text/javascript">
+	var saveBtn = document.getElementById("saveBtn");
+	var findBtn = document.getElementById("findBtn");
+
+	var nameInput = document.getElementById("name");
+	var emailInput = document.getElementById("email");
+	var phoneInput = document.getElementById("phone");
+	var memoInput = document.getElementById("memo");
+	var findInput = document.getElementById("find");
+
+	var msgCon = document.getElementById("msg");
+
+	//localStorage.clear();
+
+	saveBtn.onclick = function(){
+		var name = nameInput.value;
+		var email = emailInput.value;
+		var phone = phoneInput.value;
+		var memo = memoInput.value;
+
+		var o = new Object();
+		o.email = email;
+		o.phone = phone;
+		o.memo = memo;
+
+		var str = JSON.stringify(o);
+		localStorage.setItem(name, str);
+		alert("保存成功！");
+	}
+
+	//搜索数据
+	findBtn.onclick = function(){
+		var find = findInput.value;
+
+		var str = localStorage.getItem(find);
+
+		if(!str){
+			msgCon.innerHTML = "对不起，没有查到该人的信息";
+			return;
+		}
+
+		var o = JSON.parse(str);
+
+		var html = "姓名："+find+"<br />"
+					+"Email："+o.email+"<br />"
+					+"电话号码："+o.phone+"<br />"
+					+"备注："+o.memo;
+		msgCon.innerHTML = html;
+	}
+	</script>
+</body>
+</html>

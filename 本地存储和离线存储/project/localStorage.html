@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+	<meta charset="UTF-8" />
+	<title>利用localStorage保存数据</title>
+</head>
+<body>
+	<p id="msg"></p>
+	<table id="form">
+		<caption>用户登录</caption>
+		<tbody>
+			<tr>
+				<td>用户名：</td>
+				<td><input type="text" name="username" id="username" /></td>
+			</tr>
+			<tr>
+				<td>密码：</td>
+				<td><input type="password" name="password" id="password" /></td>
+			</tr>
+			<tr>
+				<td></td>
+				<td><input type="button" id="login" value="登录"/></td>
+			</tr>
+		</tbody>
+	</table>
+	<script type="text/javascript">
+		function checkUser(name, pwd){
+			//var num = Math.round(Math.random());
+			return true;
+		}
+
+		(function(){
+			var loginBtn = document.getElementById("login");
+			loginBtn.onclick = function(){
+
+				var username = document.getElementById("username");
+				var password = document.getElementById("password");
+
+				if(checkUser(username, password)){
+					localStorage.setItem("username", username.value);
+					alert("登录成功！");
+				}else{
+					alert("登录失败！");
+				}
+				
+			}
+			//假如用户已经登录了，那么可以直接显示欢迎页面
+			var username = localStorage.getItem("username");
+			if(!!username){
+				document.getElementById("form").style.display = "none";
+				document.getElementById("msg").innerHTML = username+",欢迎你呀！！";
+			}
+		})();
+	</script>
+</body>
+</html>

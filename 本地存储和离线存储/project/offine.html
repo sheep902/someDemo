@@ -1,0 +1,60 @@
+
+<!DOCTYPE html>
+<html lang="zh-cn" manifest="mf.manifest">
+<head>
+	<meta charset="UTF-8" />
+	<title>离线存储应用</title>
+	<style type="text/css" media="screen">
+		ul{
+			overflow: hidden;
+		}
+		li{
+			list-style: none;
+			float: left;
+		}
+	</style>
+</head>
+<body onload="alert('页面加载');init();">
+	<ul>
+		<li><a href="###"><img src="dog1.jpg" alt="小狗1"></a></li>
+		<li><a href="###"><img src="dog2.jpg" alt="小狗2"></a></li>
+		<li><a href="###"><img src="dog3.jpg" alt="小狗3"></a></li>
+	</ul>
+	<p id="msg" style="display: none;"><img src="online.jpg" /></p>
+	<script src="http://s8.qhimg.com/static/637d69428758a564/jquery/1.9.1/jquery.js"></script>
+	<script type="text/javascript" charset="utf-8">
+	function init(){
+		console.log("ahisahisa");
+		setInterval(function(){
+			//手工检查是否有更新
+			console.log("缓存刷新！");
+			applicationCache.update();
+		}, 5000);
+
+		applicationCache.addEventListener('updateready', function(){
+			if(confirm("本地缓存已被更新，需要刷新画面来获取应用程序最新版本，是否刷新？")){
+				//手动刷新
+				applicationCache.swapCache();
+				//重载画面
+				location.reload();
+			}
+		});
+	}
+
+	//检测浏览器是否在线
+	if(navigator.onLine){
+		$("#msg").show();
+	}
+
+	$("body").on("online", function(){
+		console.log("online 事件");
+		$("#msg").show();
+	});
+
+	$("body").on("offline", function(){
+		console.log("offline 事件");
+		$("#msg").hide();
+	});
+	</script>
+</body>
+</html>

@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+	<meta charset="UTF-8" />
+	<title>使用localStorage制作的简易留言本</title>
+	<style type="text/css" media="screen">
+		table{
+			border-collapse:collapse;
+		}
+		table, td,th{
+			border: 1px solid #B9B6B6;
+		}
+	</style>
+</head>
+<body onload="readMessage()">
+	<h1>使用localStorage制作的简易留言本</h1>
+	<textarea name="input" id="input" cols="30" rows="10"></textarea>
+	<br />
+	<input type="button" value="追加数据" id="addBtn"/>
+	<input type="button" value="初始化" id="clearBtn"/>
+	<p id="msg"></p>
+	<script type="text/javascript">
+	var addBtn = document.getElementById("addBtn");
+	var clearBtn = document.getElementById("clearBtn");
+
+	var input = document.getElementById("input");
+	var msgCon = document.getElementById("msg");
+
+	function saveMessage(){
+		var time = new Date().getTime();
+		var msg = input.value;
+
+		localStorage.setItem(time, msg);
+
+		//显示所有数据
+		readMessage();
+	}
+
+	function readMessage(){
+		var len = localStorage.length;
+		var key,msg,time;
+		var html = (len>=1 && ("<table><tr><th>时间</th><th>消息</th></tr>")) || "";
+
+		for(var i=0; i<len; i++){
+			key = localStorage.key(i);
+			msg = localStorage.getItem(key);
+
+			var date = new Date();
+			date.setTime(key);
+			time = date.toGMTString();
+
+			html += "<tr><td>"+time+"</td><td>"+msg+"</td></tr>";
+		}
+		html+="</table>";
+
+		msgCon.innerHTML = html;
+	}
+
+	function clearMessage(){
+		localStorage.clear();
+		msgCon.innerHTML = "";
+	}
+
+	//clearMessage();
+	//绑定点击事件
+	addBtn.onclick = saveMessage;
+	clearBtn.onclick = clearMessage;
+	</script>
+</body>
+</html>
